@@ -1,9 +1,9 @@
 import {ApiError} from "../utils/ApiError.js";
 import {asyncHandler} from "../utils/asyncHandler.js";
 import jwt from "jsonwebtoken";
-import {Student} from "../models/studentSchema.model.js";
+import {VerifiedTrainer} from "../models/vrecruiterSchema.model.js";
 
-export const verifyStudentJWT = asyncHandler(async(req, res, next) => {
+export const verifyVRecruiterJWT = asyncHandler(async(req, res, next) => {
     try {
         const token = req.cookies?.accessToken || req.header("Authorization")?.replace("bearer", "");
 
@@ -13,13 +13,13 @@ export const verifyStudentJWT = asyncHandler(async(req, res, next) => {
 
         const decodedToken = jwt.verify(token, process.env.STUDENT_ACCESS_TOKEN_SECRET);
 
-        const student = Student.findById(decodedToken._id).select("-password -refreshToken");
+        const verifiedtrainer = VerifiedTrainer.findById(decodedToken._id).select("-password -refreshToken");
 
-        if(!student){
+        if(!verifiedtrainer){
             throw new ApiError(401, "Invalid access token");
         }
 
-        req.student = student;
+        req.verifiedtrainer = verifiedtrainer;
         next();
     } catch (error) {
         throw new ApiError(400, error?.message || "Invalid access token");
