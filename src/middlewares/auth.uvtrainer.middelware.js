@@ -3,7 +3,7 @@ import {asyncHandler} from "../utils/asyncHandler.js";
 import jwt from "jsonwebtoken";
 import {UnverifiedTrainer} from "../models/uvtrainerSchema.model.js";
 
-export const verifyStudentJWT = asyncHandler(async(req, res, next) => {
+export const verifyUVTrainerJWT = asyncHandler(async(req, res, next) => {
     try {
         const token = req.cookies?.accessToken || req.header("Authorization")?.replace("bearer", "");
 
